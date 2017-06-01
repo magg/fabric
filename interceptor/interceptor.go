@@ -6,6 +6,8 @@ import (
 	context "golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"github.com/op/go-logging"
+
 )
 
 
@@ -21,6 +23,15 @@ var headers = []string{
   }
 
 var hm = map[string]string{}
+
+
+var logger *logging.Logger // package-level logger
+
+func init() {
+	logger = logging.MustGetLogger("interceptor/interceptor")
+}
+
+
 
 func BlockUnaryServerInterceptor(
     ctx context.Context,
@@ -57,6 +68,25 @@ func BlockUnaryClientInterceptor(
 
 }
 
+// NewOutgoingContext creates a new outgoing context with metadata options.
+// By default it copies all the incoming metadata from the input context.
+// This should only be used in Client interceptors.
+func NewOutgoingContext(ctx context.Context ) context.Context {
+	//opts ...MetadataOption) context.Context {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		md = md.Copy()
+	} else {
+		md = metadata.MD{}
+	}
+
+	//for _, opt := range opts {
+	//	opt(md)
+	//}
+
+	return metadata.NewOutgoingContext(ctx, md)
+}
+
 
 
 // setIDs will set the trace ids on the context{
@@ -74,7 +104,6 @@ func setIDs(ctx context.Context) context.Context {
 // getIDs will return ids embededd an ahe context.
 func getIDs(ctx context.Context) {
 	if md, ok := metadata.FromContext(ctx); ok {
-
     for i := 0; i < len(headers); i++ {
       if id := getID(md, headers[i]); id > 0 {
 				logger.Warningf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
