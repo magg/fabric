@@ -77,6 +77,7 @@ func getIDs(ctx context.Context) {
 
     for i := 0; i < len(headers); i++ {
       if id := getID(md, headers[i]); id > 0 {
+				logger.Warningf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
         hm[headers[i]] = strconv.Itoa(id)
       }
     }

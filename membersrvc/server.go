@@ -31,6 +31,8 @@ import (
 	"github.com/op/go-logging"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	magg "github.com/hyperledger/fabric/interceptor"
+
 	"google.golang.org/grpc/credentials"
 )
 
@@ -97,6 +99,7 @@ func main() {
 		logger.Debug("TLS was not enabled [security.tls_enabled == false]")
 	}
 
+	opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
 	srv := grpc.NewServer(opts...)
 
 	if viper.GetBool("aca.enabled") {
