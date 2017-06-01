@@ -40,6 +40,10 @@ import (
 	"github.com/hyperledger/fabric/core/rest"
 	"github.com/hyperledger/fabric/core/system_chaincode"
 	"github.com/hyperledger/fabric/events/producer"
+
+	magg "github.com/hyperledger/fabric/interceptor"
+
+
 	pb "github.com/hyperledger/fabric/protos"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -132,7 +136,7 @@ func serve(args []string) error {
 		}
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
-
+  opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
 	grpcServer := grpc.NewServer(opts...)
 
 	secHelper, err := getSecHelper()
