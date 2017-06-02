@@ -99,7 +99,7 @@ func main() {
 		logger.Debug("TLS was not enabled [security.tls_enabled == false]")
 	}
 
-	opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
+	//opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
 	srv := grpc.NewServer(opts...)
 
 	if viper.GetBool("aca.enabled") {
