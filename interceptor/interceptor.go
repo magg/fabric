@@ -106,7 +106,7 @@ func getIDs(ctx context.Context) {
 	if md, ok := metadata.FromContext(ctx); ok {
     for i := 0; i < len(headers); i++ {
       if id := getID(md, headers[i]); id > 0 {
-				logger.Warningf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
+				logger.Errorf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
         hm[headers[i]] = strconv.Itoa(id)
       }
     }

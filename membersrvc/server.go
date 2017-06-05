@@ -31,7 +31,7 @@ import (
 	"github.com/op/go-logging"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	//magg "github.com/hyperledger/fabric/interceptor"
+	magg "github.com/hyperledger/fabric/interceptor"
 
 	"google.golang.org/grpc/credentials"
 )
