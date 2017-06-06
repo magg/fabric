@@ -7,6 +7,9 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
+	magg "github.com/hyperledger/fabric/interceptor"
+
+
 	"github.com/op/go-logging"
 	"github.com/spf13/viper"
 )
@@ -27,6 +30,9 @@ func NewClientConnectionWithAddress(peerAddress string, block bool, tslEnabled b
 	if block {
 		opts = append(opts, grpc.WithBlock())
 	}
+
+	opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryClientInterceptor))
+
 	conn, err := grpc.Dial(peerAddress, opts...)
 	if err != nil {
 		return nil, err

@@ -42,7 +42,7 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-	getIDs(ctx)
+	//getIDs(ctx)
 
    // handle scopes?
    // ...
