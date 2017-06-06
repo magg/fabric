@@ -42,8 +42,8 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-	//getIDs(ctx)
-		ctx = NewOutgoingContext(ctx)
+	getIDs(ctx)
+
    // handle scopes?
    // ...
    return handler(ctx, req)
@@ -59,7 +59,7 @@ func BlockUnaryClientInterceptor(
   opts ...grpc.CallOption,
   ) (error) {
 
-  ctx = setIDs(ctx)
+  ctx = NewOutgoingContext(ctx)
 
   err := invoker(ctx, method, req, reply, cc, opts...)
   	if err != nil {
