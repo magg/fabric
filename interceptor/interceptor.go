@@ -42,8 +42,8 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-	getIDs(ctx)
-
+	//getIDs(ctx)
+		ctx = NewOutgoingContext(ctx)
    // handle scopes?
    // ...
    return handler(ctx, req)
