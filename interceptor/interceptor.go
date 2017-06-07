@@ -43,7 +43,7 @@ func BlockUnaryServerInterceptor(
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
 	getIDs(ctx)
-	setIDs(ctx)
+	//setIDs(ctx)
 
    // handle scopes?
    // ...
@@ -69,6 +69,11 @@ func NewOutgoingContext(ctx context.Context ) context.Context {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok {
 		md = md.Copy()
+		for i, n := range md {
+		        logger.Errorf("%s: %s\n", i, n)
+		    }
+
+
 	} else {
 		md = metadata.MD{}
 	}
@@ -97,6 +102,12 @@ func setIDs(ctx context.Context) context.Context {
 // getIDs will return ids embededd an ahe context.
 func getIDs(ctx context.Context) {
 	if md, ok := metadata.FromContext(ctx); ok {
+
+		for i, n := range md {
+		        logger.Errorf("%s: %s\n", i, n)
+		    }
+
+
     for i := 0; i < len(headers); i++ {
       if id := getID(md, headers[i]); id > 0 {
 				logger.Errorf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
