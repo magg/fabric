@@ -41,9 +41,12 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
+fmt.Printf("HOLA SERVER\n")
+
+
 	getIDs(ctx)
-	//setIDs(ctx)
-	fmt.Printf("HOLA SERVER\n")
+	setIDs(ctx)
+
    // handle scopes?
    // ...
    return handler(ctx, req)
@@ -66,21 +69,25 @@ func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply 
 // By default it copies all the incoming metadata from the input context.
 // This should only be used in Client interceptors.
 func NewOutgoingContext(ctx context.Context ) context.Context {
-	//opts ...MetadataOption) context.Context {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if ok {
-		//md = md.Copy()
-		for i, n := range md {
-		        logger.Errorf("new %s: %s\n", i, n)
-		    }
-		getIDs(ctx)
-		md = metadata.New(hm)
+
+		md, ok := metadata.FromOutgoingContext(ctx)
+		if ok {
+
+			for i, n := range md {
+			        fmt.Printf("Client  %s: %s\n", i, n)
+			    }
 
 
-	} else {
-		md = metadata.MD{}
-	}
-
+	    for i := 0; i < len(headers); i++ {
+	      if id := getID(md, headers[i]); len(id) > 0 {
+					fmt.Printf( "client key %s bucket %s\n", headers[i], id)
+	        hm[headers[i]] = id
+	      }
+	    }
+				md = metadata.New(hm)
+		} else {
+			md = metadata.MD{}
+		}
 	//for _, opt := range opts {
 	//	opt(md)
 	//}
@@ -104,7 +111,7 @@ func setIDs(ctx context.Context) context.Context {
 
 // getIDs will return ids embededd an ahe context.
 func getIDs(ctx context.Context) {
-	if md, ok := metadata.FromContext(ctx); ok {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
 
 		for i, n := range md {
 		        fmt.Printf("OLD %s: %s\n", i, n)
