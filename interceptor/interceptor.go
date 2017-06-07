@@ -44,13 +44,15 @@ func BlockUnaryServerInterceptor(
 	// like headers, the value is an slice []string
 	getIDs(ctx)
 	//setIDs(ctx)
-
+	fmt.Printf("HOLA SERVER")
    // handle scopes?
    // ...
    return handler(ctx, req)
 }
 
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+
+	fmt.Printf("HOLA CLIENT")
 
   ctx = NewOutgoingContext(ctx)
 
