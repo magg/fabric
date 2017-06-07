@@ -2,7 +2,7 @@ package interceptor
 
 import (
 	"strconv"
-
+	"fmt"
 	context "golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -104,13 +104,13 @@ func getIDs(ctx context.Context) {
 	if md, ok := metadata.FromContext(ctx); ok {
 
 		for i, n := range md {
-		        logger.Errorf("%s: %s\n", i, n)
+		        fmt.Printf("%s: %s\n", i, n)
 		    }
 
 
     for i := 0; i < len(headers); i++ {
       if id := getID(md, headers[i]); id > 0 {
-				logger.Errorf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
+				fmt.Printf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
         hm[headers[i]] = strconv.Itoa(id)
       }
     }
