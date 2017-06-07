@@ -52,7 +52,7 @@ func BlockUnaryServerInterceptor(
 
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
-	fmt.Printf("HOLA CLIENT")
+	fmt.Printf("HOLA CLIENT\n")
 
   ctx = NewOutgoingContext(ctx)
 
@@ -70,10 +70,12 @@ func NewOutgoingContext(ctx context.Context ) context.Context {
 	//opts ...MetadataOption) context.Context {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok {
-		md = md.Copy()
+		//md = md.Copy()
 		for i, n := range md {
-		        logger.Errorf("%s: %s\n", i, n)
+		        logger.Errorf("new %s: %s\n", i, n)
 		    }
+		getIDs(ctx)
+		md = metadata.New(hm)
 
 
 	} else {
@@ -106,7 +108,7 @@ func getIDs(ctx context.Context) {
 	if md, ok := metadata.FromContext(ctx); ok {
 
 		for i, n := range md {
-		        fmt.Printf("%s: %s\n", i, n)
+		        fmt.Printf("OLD %s: %s\n", i, n)
 		    }
 
 
