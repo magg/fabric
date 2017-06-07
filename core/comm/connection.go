@@ -31,7 +31,7 @@ func NewClientConnectionWithAddress(peerAddress string, block bool, tslEnabled b
 		opts = append(opts, grpc.WithBlock())
 	}
 
-	opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryClientInterceptor))
+	opts = append(opts, grpc.WithUnaryInterceptor(magg.BlockUnaryClientInterceptor))
 
 	conn, err := grpc.Dial(peerAddress, opts...)
 	if err != nil {

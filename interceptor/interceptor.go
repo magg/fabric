@@ -42,22 +42,15 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-	//getIDs(ctx)
+	getIDs(ctx)
+	setIDs(ctx)
 
    // handle scopes?
    // ...
    return handler(ctx, req)
 }
 
-func BlockUnaryClientInterceptor(
-  ctx context.Context,
-  method string,
-  req,
-  reply interface{},
-  cc *grpc.ClientConn,
-  invoker grpc.UnaryInvoker,
-  opts ...grpc.CallOption,
-  ) (error) {
+func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
   ctx = NewOutgoingContext(ctx)
 
