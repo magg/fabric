@@ -44,8 +44,8 @@ func BlockUnaryServerInterceptor(
 fmt.Printf("HOLA SERVER\n")
 
 
-	getIDs(ctx)
-	setIDs(ctx)
+	//getIDs(ctx)
+	//setIDs(ctx)
 
    // handle scopes?
    // ...
@@ -70,7 +70,7 @@ func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply 
 // This should only be used in Client interceptors.
 func NewOutgoingContext(ctx context.Context ) context.Context {
 
-		md, ok := metadata.FromOutgoingContext(ctx)
+		md, ok := metadata.FromIncomingContext(ctx)
 		if ok {
 
 			for i, n := range md {
