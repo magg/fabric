@@ -1,7 +1,6 @@
 package interceptor
 
 import (
-	"strconv"
 	"fmt"
 	context "golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -44,7 +43,7 @@ func BlockUnaryServerInterceptor(
 	// like headers, the value is an slice []string
 	getIDs(ctx)
 	//setIDs(ctx)
-	fmt.Printf("HOLA SERVER")
+	fmt.Printf("HOLA SERVER\n")
    // handle scopes?
    // ...
    return handler(ctx, req)
@@ -113,21 +112,21 @@ func getIDs(ctx context.Context) {
 
 
     for i := 0; i < len(headers); i++ {
-      if id := getID(md, headers[i]); id > 0 {
-				fmt.Printf("Replica %s received an unknown message type %s", headers[i], strconv.Itoa(id))
-        hm[headers[i]] = strconv.Itoa(id)
+      if id := getID(md, headers[i]); len(id) > 0 {
+				fmt.Printf("key %s bucket %s\n", headers[i], id)
+        hm[headers[i]] = id
       }
     }
 	}
 }
 
 // getID parses an id from the metadata.
-func getID(md metadata.MD, name string) int {
+func getID(md metadata.MD, name string) string {
 	for _, str := range md[name] {
-		id, err := strconv.Atoi(str)
-		if err == nil {
-			return id
+
+		if len(str) > 0 {
+			return str
 		}
 	}
-	return 0
+	return ""
 }
