@@ -45,7 +45,7 @@ fmt.Printf("HOLA SERVER\n")
 
 
 	getIDs(ctx)
-	setIDs(ctx)
+	ctx = setIDs(ctx)
 
    // handle scopes?
    // ...

@@ -297,7 +297,7 @@ func createEventHubServer() (net.Listener, *grpc.Server, error) {
 			opts = []grpc.ServerOption{grpc.Creds(creds)}
 		}
 
-		//opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
+		opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
 		grpcServer = grpc.NewServer(opts...)
 		ehServer := producer.NewEventsServer(
 			uint(viper.GetInt("peer.validator.events.buffersize")),
