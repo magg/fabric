@@ -52,6 +52,14 @@ fmt.Printf("HOLA SERVER\n")
    return handler(ctx, req)
 }
 
+func BlockStreamServerInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	fmt.Printf("HOLA STREAM SERVER\n")
+
+	stream.Context()
+
+	return handler(srv, stream)
+}
+
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
 	fmt.Printf("HOLA CLIENT\n")
@@ -64,6 +72,21 @@ func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply 
   return err
 
 }
+
+func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, streamer grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
+
+	fmt.Printf("HOLA STREAM CLIENT\n")
+
+
+	clientStream, err := streamer(ctx, desc, cc, method, opts...)
+		if err != nil {
+			return nil, err
+	}
+
+	return clientStream, err
+
+}
+
 
 // NewOutgoingContext creates a new outgoing context with metadata options.
 // By default it copies all the incoming metadata from the input context.

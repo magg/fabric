@@ -42,6 +42,7 @@ import (
 	"github.com/hyperledger/fabric/events/producer"
 
 	magg "github.com/hyperledger/fabric/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 
 
 	pb "github.com/hyperledger/fabric/protos"
@@ -136,7 +137,8 @@ func serve(args []string) error {
 		}
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
-  opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
+  opts = append(opts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
+	opts = append(opts,  grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
 	grpcServer := grpc.NewServer(opts...)
 
 	secHelper, err := getSecHelper()
@@ -297,7 +299,8 @@ func createEventHubServer() (net.Listener, *grpc.Server, error) {
 			opts = []grpc.ServerOption{grpc.Creds(creds)}
 		}
 
-		opts = append(opts, grpc.UnaryInterceptor(magg.BlockUnaryServerInterceptor))
+		opts = append(opts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
+		opts = append(opts,  grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
 		grpcServer = grpc.NewServer(opts...)
 		ehServer := producer.NewEventsServer(
 			uint(viper.GetInt("peer.validator.events.buffersize")),
