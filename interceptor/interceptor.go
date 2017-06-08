@@ -44,8 +44,8 @@ func BlockUnaryServerInterceptor(
 fmt.Printf("HOLA SERVER\n")
 
 
-	//getIDs(ctx)
-	//setIDs(ctx)
+	getIDs(ctx)
+	setIDs(ctx)
 
    // handle scopes?
    // ...
