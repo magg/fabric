@@ -21,6 +21,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
+
+	magg "github.com/hyperledger/fabric/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+
 )
 
 const defaultTimeout = time.Second * 3
@@ -188,6 +192,11 @@ func NewClientConnectionWithAddress(peerAddress string, block bool, tslEnabled b
 	}
 	opts = append(opts, grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(MaxRecvMsgSize()),
 		grpc.MaxCallSendMsgSize(MaxSendMsgSize())))
+
+	opts = append(opts, grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(magg.BlockUnaryClientInterceptor)))
+
+	opts = append(opts, grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(magg.BlockStreamClientInterceptor)))
+
 	conn, err := grpc.Dial(peerAddress, opts...)
 	if err != nil {
 		return nil, err

@@ -150,7 +150,7 @@ type Kafka struct {
 var genesisDefaults = TopLevel{
 	Orderer: &Orderer{
 		OrdererType:  "solo",
-		Addresses:    []string{"127.0.0.1:7050"},
+		Addresses:    []string{"127.0.0.1:37050"},
 		BatchTimeout: 2 * time.Second,
 		BatchSize: BatchSize{
 			MaxMessageCount:   10,

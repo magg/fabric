@@ -29,6 +29,10 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+
+	magg "github.com/hyperledger/fabric/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 )
 
 const (
@@ -147,6 +151,11 @@ func InitCmdFactory(isEndorserRequired EndorserRequirement, isOrdererRequired Or
 		} else {
 			opts = append(opts, grpc.WithInsecure())
 		}
+
+		opts = append(opts, grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(magg.BlockUnaryClientInterceptor)))
+
+		opts = append(opts, grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(magg.BlockStreamClientInterceptor)))
+
 		conn, err := grpc.Dial(orderingEndpoint, opts...)
 		if err != nil {
 			return nil, err

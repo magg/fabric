@@ -26,6 +26,10 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+	magg "github.com/hyperledger/fabric/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+
 )
 
 type BroadcastClient interface {
@@ -62,6 +66,10 @@ func GetBroadcastClient(orderingEndpoint string, tlsEnabled bool, caFile string)
 
 	opts = append(opts, grpc.WithTimeout(3*time.Second))
 	opts = append(opts, grpc.WithBlock())
+
+	opts = append(opts, grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(magg.BlockUnaryClientInterceptor)))
+
+	opts = append(opts, grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(magg.BlockStreamClientInterceptor)))
 
 	conn, err := grpc.Dial(orderingEndpoint, opts...)
 	if err != nil {

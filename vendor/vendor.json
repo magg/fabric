@@ -296,6 +296,12 @@
 			"versionExact": "v1.4.0"
 		},
 		{
+			"checksumSHA1": "a5pGpTP8bSNLEFDUmQU8XsOrYt4=",
+			"path": "github.com/grpc-ecosystem/go-grpc-middleware",
+			"revision": "f63a7dfb64c138bd93d5c5b896d8b33c4b08e000",
+			"revisionTime": "2017-06-11T11:46:47Z"
+		},
+		{
 			"checksumSHA1": "Uzyon2091lmwacNsl1hCytjhHtg=",
 			"path": "github.com/hashicorp/go-cleanhttp",
 			"revision": "ad28ea4487f05916463e2423a55166280e8254b5",
@@ -705,5 +711,5 @@
 			"revisionTime": "2017-02-08T14:18:51Z"
 		}
 	],
-	"rootPath": "github.com/hyperledger/fabric"
+	"rootPath": "github.com/magg/fabric"
 }

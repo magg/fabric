@@ -57,7 +57,7 @@ func startCmd() *cobra.Command {
 		"Whether peer in chaincode development mode")
 	flags.BoolVarP(&peerDefaultChain, "peer-defaultchain", "", false,
 		"Whether to start peer with chain testchainid")
-	flags.StringVarP(&orderingEndpoint, "orderer", "o", "orderer:7050", "Ordering service endpoint")
+	flags.StringVarP(&orderingEndpoint, "orderer", "o", "orderer:37050", "Ordering service endpoint")
 
 	return nodeStartCmd
 }
