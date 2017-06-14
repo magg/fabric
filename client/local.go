@@ -1,9 +1,7 @@
 package client
 
 import (
-	"crypto/rand"
-	"encoding/binary"
-	"fmt"
+
 	"github.com/hyperledger/fabric/local"
 )
 
