@@ -644,6 +644,10 @@ func createGRPCLayer(port int) (*grpc.Server, net.Listener, api.PeerSecureDialOp
 	})
 	dialOpts = append(dialOpts, grpc.WithTransportCredentials(ta))
 
+	dialOpts = append(dialOpts, grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(magg.BlockUnaryClientInterceptor)))
+
+	dialOpts = append(dialOpts, grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(magg.BlockStreamClientInterceptor)))
+
 	listenAddress := fmt.Sprintf("%s:%d", "", port)
 	ll, err = net.Listen("tcp", listenAddress)
 	if err != nil {
