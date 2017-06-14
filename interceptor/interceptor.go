@@ -7,6 +7,8 @@ import (
 	"google.golang.org/grpc/metadata"
 	"github.com/op/go-logging"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+
 )
 
 
@@ -41,21 +43,26 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-fmt.Printf("HOLA SERVER\n")
+///fmt.Printf("HOLA SERVER\n")
 
 
-	getIDs(ctx)
-	ctx = setIDs(ctx)
+	//getIDs(ctx)
+	//ctx = setIDs(ctx)
 
    // handle scopes?
    // ...
    return handler(ctx, req)
 }
 
-func BlockStreamServerInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	fmt.Printf("HOLA STREAM SERVER\n")
 
-	stream.Context()
+	//stream := middleware.WrapServerStream(ss)
+
+	//getIDs(stream.Context())
+	//ctx := setIDs(stream.Context())
+
+	//stream.WrappedContext = metadata.NewIncomingContext(ctx)
 
 	return handler(srv, stream)
 }
@@ -63,8 +70,18 @@ func BlockStreamServerInterceptor(srv interface{}, stream grpc.ServerStream, inf
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
 	fmt.Printf("HOLA CLIENT\n")
+	md, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		for i, n := range md {
+						fmt.Printf("Client  %s: %s\n", i, n)
+				}
+		md = md.Copy()
+	} else {
+		fmt.Printf("Client  empty \n")
+	}
 
-  ctx = NewOutgoingContext(ctx)
+  ctx = metadata.NewOutgoingContext(ctx, md)
+
 
   err := invoker(ctx, method, req, reply, cc, opts...)
   	if err != nil {
@@ -77,7 +94,20 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 	fmt.Printf("HOLA STREAM CLIENT\n")
 
-	ctx = NewOutgoingContext(ctx)
+	//ctx = NewOutgoingContext(ctx)
+
+
+	md, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		for i, n := range md {
+						fmt.Printf("Client  %s: %s\n", i, n)
+				}
+		md = md.Copy()
+	} else {
+		fmt.Printf("Client  empty \n")
+	}
+
+	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	clientStream, err := streamer(ctx, desc, cc, method, opts...)
 		if err != nil {
