@@ -652,8 +652,8 @@ func createGRPCLayer(port int) (*grpc.Server, net.Listener, api.PeerSecureDialOp
 	secureDialOpts := func() []grpc.DialOption {
 		return dialOpts
 	}
-	serverOpts = append(opts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
-	serverOpts = append(opts, grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
+	serverOpts = append(serverOpts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
+	serverOpts = append(serverOpts, grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
 
 	s = grpc.NewServer(serverOpts...)
 	return s, ll, secureDialOpts, returnedCertHash

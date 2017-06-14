@@ -177,8 +177,8 @@ func NewGRPCServerFromListener(listener net.Listener, secureConfig SecureServerC
 	serverOpts = append(serverOpts, ServerKeepaliveOptions()...)
 
 
-	serverOpts = append(opts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
-	serverOpts = append(opts, grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
+	serverOpts = append(serverOpts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
+	serverOpts = append(serverOpts, grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
 
 	grpcServer.server = grpc.NewServer(serverOpts...)
 
