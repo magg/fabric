@@ -67,7 +67,8 @@ GRPCRecieved(md)
 		} else {
 			fmt.Printf("Returning from %s, response: %s", info.FullMethod, resp)
 		}
-	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...)
+		grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
+		return resp, err
 
 	//getIDs(ctx)
 	//ctx = setIDs(ctx)
