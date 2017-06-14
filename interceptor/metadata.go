@@ -55,7 +55,7 @@ func GRPCReturned(md map[string][]string) {
 
 	client.RPCReturned(client.RPCMetadata{
     RequestID: req,
-		TraceID: traceID
+		TraceID: traceID,
 	})
 }
 

@@ -179,7 +179,7 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 }
 
-
+/*
 // NewOutgoingContext creates a new outgoing context with metadata options.
 // By default it copies all the incoming metadata from the input context.
 // This should only be used in Client interceptors.
@@ -252,3 +252,5 @@ func getID(md metadata.MD, name string) string {
 	}
 	return ""
 }
+
+*/
