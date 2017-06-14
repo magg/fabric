@@ -25,13 +25,13 @@ func GRPCRecieved(md map[string][]string) {
 	if !ok || len(req_strs) < 1 {
 		return
 	}
-	req := getIDs(md, REQUEST_KEY)
+	req := getID(md, REQUEST_KEY)
 
 	trace_strs, ok := md[TRACE_KEY]
 	if !ok || len(trace_strs) < 1 {
 		return
 	}
-	traceID= getIDs(md, TRACE_KEY)
+	traceID := getID(md, TRACE_KEY)
 
 
 	client.RPCReceived(client.RPCMetadata{
@@ -45,13 +45,13 @@ func GRPCReturned(md map[string][]string) {
   if !ok || len(req_strs) < 1 {
     return
   }
-  req := getIDs(md, REQUEST_KEY)
+  req := getID(md, REQUEST_KEY)
 
   trace_strs, ok := md[TRACE_KEY]
   if !ok || len(trace_strs) < 1 {
     return
   }
-  traceID= getIDs(md, TRACE_KEY)
+  traceID := getID(md, TRACE_KEY)
 
 	client.RPCReturned(client.RPCMetadata{
     RequestID: req,
