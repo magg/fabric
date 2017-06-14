@@ -203,6 +203,10 @@ func DefaultConnectionFactory(endpoint string) (*grpc.ClientConn, error) {
 		dialOpts = append(dialOpts, grpc.WithInsecure())
 	}
 	grpc.EnableTracing = true
+	dialOpts = append(dialOpts, grpc.WithUnaryInterceptor(grpc_middleware.ChainUnaryClient(magg.BlockUnaryClientInterceptor)))
+
+	dialOpts = append(dialOpts, grpc.WithStreamInterceptor(grpc_middleware.ChainStreamClient(magg.BlockStreamClientInterceptor)))
+
 	return grpc.Dial(endpoint, dialOpts...)
 }
 

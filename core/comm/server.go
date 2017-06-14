@@ -16,6 +16,10 @@ import (
 	"sync"
 
 	"google.golang.org/grpc"
+
+	magg "github.com/hyperledger/fabric/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+
 )
 
 //A SecureServerConfig structure is used to configure security (e.g. TLS) for a
@@ -171,6 +175,10 @@ func NewGRPCServerFromListener(listener net.Listener, secureConfig SecureServerC
 	serverOpts = append(serverOpts, grpc.MaxRecvMsgSize(MaxRecvMsgSize()))
 	// set the keepalive options
 	serverOpts = append(serverOpts, ServerKeepaliveOptions()...)
+
+
+	serverOpts = append(opts,grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(magg.BlockStreamServerInterceptor)))
+	serverOpts = append(opts, grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(magg.BlockUnaryServerInterceptor)))
 
 	grpcServer.server = grpc.NewServer(serverOpts...)
 
