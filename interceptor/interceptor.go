@@ -43,7 +43,7 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-///fmt.Printf("HOLA SERVER\n")
+fmt.Printf("HOLA SERVER\n")
 
 
 md, ok := metadata.FromIncomingContext(ctx)
@@ -55,20 +55,36 @@ if ok {
 	fmt.Printf("Server  empty \n")
 }
 
+GRPCRecieved(md)
+
+	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
+
+
+
+	resp, err := handler(ctx, req)
+		if err != nil {
+			fmt.Printf("Returning from %s, error: %s", info.FullMethod, err.Error())
+		} else {
+			fmt.Printf("Returning from %s, response: %s", info.FullMethod, resp)
+		}
+	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...)
+
 	//getIDs(ctx)
 	//ctx = setIDs(ctx)
 
    // handle scopes?
    // ...
-   return handler(ctx, req)
+   //return handler(ctx, req)
 }
 
 func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-	fmt.Printf("HOLA STREAM SERVER\n")
+
+
+	//fmt.Printf("HOLA STREAM SERVER\n")
 
 	stream := grpc_middleware.WrapServerStream(ss)
 
-
+/*
 	md, ok := metadata.FromIncomingContext(stream.Context())
 	if ok {
 		for i, n := range md {
@@ -77,6 +93,8 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	}else {
 		fmt.Printf("StreamServer  empty \n")
 	}
+
+	*/
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
 
@@ -88,6 +106,9 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
 	fmt.Printf("HOLA CLIENT\n")
+
+/*
+
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok {
 		for i, n := range md {
@@ -106,10 +127,18 @@ func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply 
   	}
   return err
 
+*/
+
+
+var md metadata.MD
+	err := invoker(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), method, req, reply, cc, append(opts, grpc.Header(&md))...)
+	GRPCReturned(md)
+return err
+
 }
 
 func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, streamer grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
-
+/*
 	fmt.Printf("HOLA STREAM CLIENT\n")
 
 	//ctx = NewOutgoingContext(ctx)
