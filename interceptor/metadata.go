@@ -61,7 +61,7 @@ func GRPCReturned(md map[string][]string) {
 
 
 // getID parses an id from the metadata.
-func getID(md metadata.MD, name string) string {
+func getID(md map[string][]string, name string) string {
 	for _, str := range md[name] {
 
 		if len(str) > 0 {
