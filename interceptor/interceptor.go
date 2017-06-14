@@ -77,6 +77,7 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 	fmt.Printf("HOLA STREAM CLIENT\n")
 
+	ctx = NewOutgoingContext(ctx)
 
 	clientStream, err := streamer(ctx, desc, cc, method, opts...)
 		if err != nil {
@@ -93,7 +94,7 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 // This should only be used in Client interceptors.
 func NewOutgoingContext(ctx context.Context ) context.Context {
 
-		md, ok := metadata.FromIncomingContext(ctx)
+		md, ok := metadata.FromOutgoingContext(ctx)
 		if ok {
 
 			for i, n := range md {
