@@ -3,7 +3,7 @@ package interceptor
 
 
 import (
-	"github.com/hyperledger/magg/client"
+	"github.com/hyperledger/fabric/client"
 )
 
 
