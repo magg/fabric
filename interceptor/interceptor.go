@@ -46,6 +46,15 @@ func BlockUnaryServerInterceptor(
 ///fmt.Printf("HOLA SERVER\n")
 
 
+md, ok := metadata.FromIncomingContext(ctx)
+if ok {
+	for i, n := range md {
+					fmt.Printf("Server  %s: %s\n", i, n)
+			}
+} else {
+	fmt.Printf("Server  empty \n")
+}
+
 	//getIDs(ctx)
 	//ctx = setIDs(ctx)
 
@@ -57,8 +66,17 @@ func BlockUnaryServerInterceptor(
 func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	fmt.Printf("HOLA STREAM SERVER\n")
 
-	//stream := middleware.WrapServerStream(ss)
+	stream := grpc_middleware.WrapServerStream(ss)
 
+
+	md, ok := metadata.FromIncomingContext(stream.Context())
+	if ok {
+		for i, n := range md {
+						fmt.Printf("Stream Server  %s: %s\n", i, n)
+				}
+	}else {
+		fmt.Printf("StreamServer  empty \n")
+	}
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
 
@@ -96,7 +114,20 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 	//ctx = NewOutgoingContext(ctx)
 
+	md, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		for i, n := range md {
+						fmt.Printf("Stream Client  %s: %s\n", i, n)
+				}
+		md = md.Copy()
+	} else {
+		fmt.Printf("Stream Client  empty \n")
+	}
 
+  ctx = metadata.NewOutgoingContext(ctx, md)
+
+
+/*
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok {
 		for i, n := range md {
@@ -108,7 +139,7 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 	}
 
 	ctx = metadata.NewOutgoingContext(ctx, md)
-
+*/
 	clientStream, err := streamer(ctx, desc, cc, method, opts...)
 		if err != nil {
 			return nil, err
