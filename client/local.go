@@ -10,13 +10,11 @@ var token local.Token
 type localStorage struct {
 	requestID        string
 	traceID          string
-/*
   spanID           string
   parentSpanID     string
   sampledID        string
   flagsID          string
   otSpan           string
-*/
   //redundancies []string
 	//tags         []string
 }
@@ -25,26 +23,23 @@ type localStorage struct {
 type RPCMetadata struct {
   RequestID        string
 	TraceID          string
-/*
   SpanID           string
   ParentSpanID     string
   SampledID        string
   FlagsID          string
   OtSpan           string
-*/
 }
 
 func init() {
 	token = local.Register(&localStorage{
     requestID:        "",
   	traceID:          "",
-/*
     spanID:           "",
     parentSpanID:     "",
     sampledID:        "",
     flagsID:          "",
     otSpan:           "",
-*/
+
   }, local.Callbacks{
 		func(l interface{}) interface{} {
 			// deep copy l
@@ -72,13 +67,11 @@ func GetRPCMetadata() RPCMetadata {
 	var r RPCMetadata
   r.RequestID    = l.requestID
   r.TraceID      = l.traceID
-/*
   r.SpanID       = l.spanID
   r.ParentSpanID = l.parentSpanID
   r.SampledID    = l.sampledID
   r.FlagsID      = l.flagsID
   r.OtSpan       = l.otSpan
-*/
 	return r
 }
 
@@ -86,19 +79,22 @@ func (r *RPCMetadata) Set() {
 	l := getLocal()
   r.RequestID    = l.requestID
   r.TraceID      = l.traceID
-
-/*
   r.SpanID       = l.spanID
   r.ParentSpanID = l.parentSpanID
   r.SampledID    = l.sampledID
   r.FlagsID      = l.flagsID
   r.OtSpan       = l.otSpan
-*/
+
 }
 
 func RPCReceived(r RPCMetadata) {
   SetTraceID(r.TraceID)
 	SetRequestID(r.RequestID)
+  SetSpanID(r.SpanID)
+  SetParentSpanID(r.ParentSpanID)
+  SetSampledID(r.SampledID)
+  SetFlagsID(r.FlagsID)
+  SetOtSpan(r.OtSpan)
 
 	//(msg)
 }
@@ -106,8 +102,33 @@ func RPCReceived(r RPCMetadata) {
 func RPCReturned(r RPCMetadata) {
 	SetTraceID(r.TraceID)
 	SetRequestID(r.RequestID)
+  SetSpanID(r.SpanID)
+  SetParentSpanID(r.ParentSpanID)
+  SetSampledID(r.SampledID)
 	//Log(msg)
 }
+
+
+
+func SetSpanID(spanID string) {
+	getLocal().spanID = spanID
+}
+
+func SetParentSpanID(parentSpanID string) {
+	getLocal().parentSpanID = parentSpanID
+}
+func SetSampledID(sampledID string) {
+	getLocal().sampledID = sampledID
+}
+
+func SetFlagsID(flagsID string) {
+	getLocal().flagsID = flagsID
+}
+func SetOtSpan(otSpan string) {
+	getLocal().otSpan = otSpan
+}
+
+
 
 // SetEventID sets the current goroutine's X-Trace Event ID.
 // This should be used when propagating Event IDs over RPC

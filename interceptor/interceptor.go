@@ -46,20 +46,12 @@ func BlockUnaryServerInterceptor(
 fmt.Printf("HOLA SERVER\n")
 
 
-md, ok := metadata.FromIncomingContext(ctx)
-if ok {
-	for i, n := range md {
-					fmt.Printf("Server  %s: %s\n", i, n)
-			}
-} else {
-	fmt.Printf("Server  empty \n")
+md, ok := metadata.FromContext(ctx)
+if !ok {
+	fmt.Printf("Server empty, no metadata in request context. \n")
 }
 
-GRPCRecieved(md)
-
-	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
-
-
+	GRPCRecieved(md)
 
 	resp, err := handler(ctx, req)
 		if err != nil {
