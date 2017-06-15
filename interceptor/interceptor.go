@@ -76,9 +76,9 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	fmt.Printf("\nHOLA STREAM SERVER\n")
 
 	stream := grpc_middleware.WrapServerStream(ss)
+	ctx := stream.Context()
 
-
-	md, ok := metadata.FromIncomingContext(stream.Context())
+	md, ok := metadata.FromContext(ctx)
 	if !ok {
 		fmt.Printf("StreamServer  empty \n")
 	}
@@ -90,7 +90,7 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	if err != nil {
 		fmt.Printf("Returning from %s, error: %s", info.FullMethod, err.Error())
 	} else {
-		fmt.Printf("Returning from %s, response: %s", info.FullMethod, resp)
+		fmt.Printf("Returning from %s, response stream", info.FullMethod)
 	}
 	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
 
