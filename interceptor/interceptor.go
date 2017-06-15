@@ -2,7 +2,7 @@ package interceptor
 
 import (
 	"fmt"
-	"context"
+	context "golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"github.com/op/go-logging"
