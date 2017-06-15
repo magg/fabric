@@ -2,7 +2,7 @@ package interceptor
 
 import (
 	"fmt"
-	context "golang.org/x/net/context"
+	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"github.com/op/go-logging"
@@ -11,7 +11,7 @@ import (
 
 )
 
-
+/*
 
 var headers = []string{
     "x-ot-span-context",
@@ -24,7 +24,7 @@ var headers = []string{
   }
 
 var hm = map[string]string{}
-
+*/
 
 var logger *logging.Logger // package-level logger
 
