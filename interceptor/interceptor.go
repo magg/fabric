@@ -97,7 +97,7 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
 
-	//stream.WrappedContext = metadata.NewIncomingContext(ctx)
+	stream.WrappedContext = ctx
 
 	return err
 }
