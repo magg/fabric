@@ -43,7 +43,7 @@ func BlockUnaryServerInterceptor(
 
 	// validate 'authorization' metadata
 	// like headers, the value is an slice []string
-fmt.Printf("HOLA SERVER\n")
+fmt.Printf("\nHOLA SERVER\n")
 
 
 md, ok := metadata.FromContext(ctx)
@@ -73,32 +73,38 @@ if !ok {
 func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 
 
-	//fmt.Printf("HOLA STREAM SERVER\n")
+	fmt.Printf("\nHOLA STREAM SERVER\n")
 
 	stream := grpc_middleware.WrapServerStream(ss)
 
-/*
+
 	md, ok := metadata.FromIncomingContext(stream.Context())
-	if ok {
-		for i, n := range md {
-						fmt.Printf("Stream Server  %s: %s\n", i, n)
-				}
-	}else {
+	if !ok {
 		fmt.Printf("StreamServer  empty \n")
 	}
 
-	*/
+	GRPCRecieved(md)
+
+
+	err :=  handler(srv, stream)
+	if err != nil {
+		fmt.Printf("Returning from %s, error: %s", info.FullMethod, err.Error())
+	} else {
+		fmt.Printf("Returning from %s, response: %s", info.FullMethod, resp)
+	}
+	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
+
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
 
 	//stream.WrappedContext = metadata.NewIncomingContext(ctx)
 
-	return handler(srv, stream)
+	return err
 }
 
 func BlockUnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
-	fmt.Printf("HOLA CLIENT\n")
+	fmt.Printf("\nHOLA CLIENT\n")
 
 /*
 
@@ -132,7 +138,6 @@ return err
 
 func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, streamer grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
 /*
-	fmt.Printf("HOLA STREAM CLIENT\n")
 
 	//ctx = NewOutgoingContext(ctx)
 
@@ -162,7 +167,12 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 	ctx = metadata.NewOutgoingContext(ctx, md)
 */
-	clientStream, err := streamer(ctx, desc, cc, method, opts...)
+
+fmt.Printf("\nHOLA STREAM CLIENT\n")
+
+var md metadata.MD
+
+	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, append(opts, grpc.Header(&md))...)
 		if err != nil {
 			return nil, err
 	}
