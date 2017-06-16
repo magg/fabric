@@ -49,6 +49,7 @@ fmt.Printf("\nHOLA SERVER\n")
 md, ok := metadata.FromContext(ctx)
 if !ok {
 	fmt.Printf("Server empty, no metadata in request context. \n")
+	return handler(ctx, req)
 }
 
 	GRPCRecieved(md)
@@ -67,7 +68,7 @@ if !ok {
 
    // handle scopes?
    // ...
-   //return handler(ctx, req)
+   //
 }
 
 func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
@@ -81,6 +82,7 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	md, ok := metadata.FromContext(ctx)
 	if !ok {
 		fmt.Printf("StreamServer  empty \n")
+		return handler(srv, ss)
 	}
 
 	GRPCRecieved(md)
@@ -92,7 +94,7 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	} else {
 		fmt.Printf("Returning from %s, response stream", info.FullMethod)
 	}
-	grpc.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
+	stream.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
 
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
@@ -172,7 +174,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 
 var md metadata.MD
 
-	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, append(opts, grpc.Header(&md))...)
+	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, opts...))
 		if err != nil {
 			return nil, err
 	}
