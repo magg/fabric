@@ -174,7 +174,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 
 var md metadata.MD
 
-	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, opts...))
+	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, opts...)
 		if err != nil {
 			return nil, err
 	}
