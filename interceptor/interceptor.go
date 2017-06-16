@@ -94,7 +94,7 @@ func BlockStreamServerInterceptor(srv interface{}, ss grpc.ServerStream, info *g
 	} else {
 		fmt.Printf("Returning from %s, response stream", info.FullMethod)
 	}
-	stream.SetHeader(ctx, metadata.Pairs(GRPCMetadata()...))
+	stream.SetHeader(metadata.Pairs(GRPCMetadata()...))
 
 	//getIDs(stream.Context())
 	//ctx := setIDs(stream.Context())
