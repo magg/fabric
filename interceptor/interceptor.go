@@ -179,6 +179,9 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 			return nil, err
 	}
 
+	header, err := clientStream.Header()
+	GRPCReturned(header)
+
 	return clientStream, err
 
 }
