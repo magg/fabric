@@ -179,7 +179,7 @@ var header metadata.MD
 			return nil, err
 	}
 
-	header, err := clientStream.Header()
+	header, err = clientStream.Header()
 	GRPCReturned(header)
 
 	return clientStream, err
