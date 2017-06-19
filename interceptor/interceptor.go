@@ -179,12 +179,15 @@ var header metadata.MD
 			return nil, err
 	}
 
-	header, err = clientStream.Header()
-  if err != nil {
+	md, ok := metadata.FromContext(clientStream.Stream.Context())
+	if !ok {
 		return clientStream, err
+	} else {
+		header, err = clientStream.Header()
+		GRPCReturned(header)
 	}
 
-	GRPCReturned(header)
+
 
 	return clientStream, err
 
