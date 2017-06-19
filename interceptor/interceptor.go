@@ -172,7 +172,7 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 fmt.Printf("\nHOLA STREAM CLIENT\n")
 
-//var md metadata.MD
+var header metadata.MD
 
 	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, opts...) //append(opts, grpc.Header(&md))...)
 		if err != nil {
