@@ -61,8 +61,6 @@ getIDs(md)
 
 */
 
-getIDs(md)
-
 	client.RPCReceived(client.RPCMetadata{
 		RequestID: hm[headers[1]],
 		TraceID: hm[headers[2]],
@@ -89,6 +87,10 @@ func GRPCReturned(md map[string][]string) {
   }
   traceID := getID(md, TRACE_KEY)
 */
+
+  getIDs(md)
+
+
 	client.RPCReturned(client.RPCMetadata{
     RequestID: hm[headers[1]],
 		TraceID: hm[headers[2]],
