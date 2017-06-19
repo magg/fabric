@@ -186,7 +186,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 }
 
 
-func getHeader(clientStream ClientStream){
+func getHeader(clientStream grpc.ClientStream){
 	header, err := clientStream.Header()
 	if err != nil {
 		fmt.Printf("Failed to get header from client: %v\n", err)
