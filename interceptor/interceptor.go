@@ -179,20 +179,21 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 			return nil, err
 	}
 
-
 	//header, err = clientStream.Header()
-	//
+	go getHeader(clientStream)
 
-	header, erro := clientStream.Header()
-	if erro != nil {
-		fmt.Printf("Failed to get header from client: %v\n", erro)
-		return clientStream, err
+	return clientStream, err
+}
+
+
+func getHeader(clientStream ClientStream){
+	header, err := clientStream.Header()
+	if err != nil {
+		fmt.Printf("Failed to get header from client: %v\n", err)
 	} else {
 		GRPCReturned(header)
 	}
-
-	return clientStream, err
-
+	return
 }
 
 /*
