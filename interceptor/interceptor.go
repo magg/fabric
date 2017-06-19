@@ -172,22 +172,24 @@ func BlockStreamClientInterceptor(ctx context.Context, desc *grpc.StreamDesc, cc
 
 fmt.Printf("\nHOLA STREAM CLIENT\n")
 
-var header metadata.MD
+//var header metadata.MD
 
 	clientStream, err := streamer(metadata.NewContext(ctx, metadata.Pairs(GRPCMetadata()...)), desc, cc, method, opts...) //append(opts, grpc.Header(&md))...)
 		if err != nil {
 			return nil, err
 	}
 
-	md, ok := metadata.FromContext(clientStream.Stream.Context())
-	if !ok {
+
+	//header, err = clientStream.Header()
+	//
+
+	header, erro := stream.Header()
+	if err != nil {
+		fmt.Printf("Failed to get header from client: %v\n", erro)
 		return clientStream, err
 	} else {
-		header, err = clientStream.Header()
 		GRPCReturned(header)
 	}
-
-
 
 	return clientStream, err
 
