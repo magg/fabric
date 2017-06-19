@@ -183,7 +183,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 	//header, err = clientStream.Header()
 	//
 
-	header, erro := stream.Header()
+	header, erro := clientStream.Header()
 	if erro != nil {
 		fmt.Printf("Failed to get header from client: %v\n", erro)
 		return clientStream, err
