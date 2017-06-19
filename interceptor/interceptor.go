@@ -180,6 +180,10 @@ var header metadata.MD
 	}
 
 	header, err = clientStream.Header()
+  if err != nil {
+		return clientStream, err
+	}
+
 	GRPCReturned(header)
 
 	return clientStream, err
