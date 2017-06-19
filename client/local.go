@@ -105,6 +105,8 @@ func RPCReturned(r RPCMetadata) {
   SetSpanID(r.SpanID)
   SetParentSpanID(r.ParentSpanID)
   SetSampledID(r.SampledID)
+	SetFlagsID(r.FlagsID)
+	SetOtSpan(r.OtSpan)
 	//Log(msg)
 }
 
