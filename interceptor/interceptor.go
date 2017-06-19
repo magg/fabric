@@ -184,7 +184,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 	//
 
 	header, erro := stream.Header()
-	if err != nil {
+	if erro != nil {
 		fmt.Printf("Failed to get header from client: %v\n", erro)
 		return clientStream, err
 	} else {
