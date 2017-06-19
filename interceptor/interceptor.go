@@ -180,7 +180,7 @@ fmt.Printf("\nHOLA STREAM CLIENT\n")
 	}
 
 	//header, err = clientStream.Header()
-	go getHeader(clientStream)
+	//go getHeader(clientStream)
 
 	return clientStream, err
 }
